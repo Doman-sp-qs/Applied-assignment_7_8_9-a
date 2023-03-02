@@ -10,19 +10,56 @@
   		<h2>Book detail</h2>
   		<table class='table'>
   		  <tr>
-          <td><%= link_to(user_path(@book.user_id)) do %>
-            <%= image_tag @book.user.get_profile_image, size:"100x100" %><br>
-            <%= @book.user.name %>
+          <td>
+            <%= link_to(user_path(@book.user_id)) do %>
+              <%= image_tag @book.user.get_profile_image, size:"100x100" %><br>
+              <%= @book.user.name %>
             <% end %>
           </td>
           <td><%= link_to @book.title, book_path(@book.id) %></td>
           <td><%= @book.body %></td>
+          <% if @book.favorited_by?(current_user) %>
+          <td>
+            <%= link_to book_favorites_path(@book), method: :delete, class: 'text-danger' do %>
+              <i class="fas fa-heart"></i><%= @book.favorites.count %>
+            <% end %>
+          </td>
+          <% else %>
+          <td>
+             <%= link_to book_favorites_path(@book), method: :post, class: 'text-info' do %>
+              <i class="far fa-heart"></i><%= @book.favorites.count %>
+            <% end %>
+          </td>
+          <% end %>
+          <td>コメント数:<%= @book.book_comments.count %></td>
           <% if @book.user_id == current_user.id %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success" %></td>
             <td><%= link_to 'Destroy', @book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
           <% end %>
         </tr>
       </table>
+      <div class="mt-5">
+        <table>
+          <% @book.book_comments.each do |book_comment| %>
+          <tr>
+            <td>
+              <%= link_to(user_path(book_comment.user_id)) do %>
+                <%= image_tag book_comment.user.get_profile_image, size:"100x100" %><br>
+                <%= book_comment.user.name %>
+              <% end %>
+            </td>
+            <td><%= book_comment.comment %></td>
+            <td><%= link_to 'Destroy', @book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
+          </tr>
+          <% end %>
+        </table>
+        <%= render 'layouts/errors', obj: book_comment %>
+        <%= form_with model: [@book, @book_comment] do |f| %>
+          <%= f.label 'コメント' %><br />
+          <%= f.text_area :comment, class: 'form-control' %><br />
+          <%= f.submit "送信" %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
