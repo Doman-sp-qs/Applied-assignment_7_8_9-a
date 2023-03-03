@@ -41,8 +41,6 @@
       <div class="mt-5">
         <table>
           <% @book.book_comments.each do |book_comment| %>
-
-          <%= book_comment.id %>
           <tr>
             <td>
               <%= link_to(user_path(book_comment.user_id)) do %>

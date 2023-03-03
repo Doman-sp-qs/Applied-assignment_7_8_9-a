@@ -9,11 +9,7 @@ class BookCommentsController < ApplicationController
   end
   
   def destroy
-    
     comment = BookComment.find_by(id:params[:id], book_id: params[:book_id])
-    p "デバッグコメント"
-    p params
-    p comment
     comment.destroy
     redirect_to book_path(params[:book_id])
   end
