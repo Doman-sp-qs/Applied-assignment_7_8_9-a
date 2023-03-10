@@ -12,6 +12,8 @@ class Book < ApplicationRecord
   validates :body, presence: true, length:{maximum: 200}
   
   
+  scope :created_this_week, -> {where(created_at: 6.day.ago.beginning_of_day..Time.zone.now.end_of_day)}
+  
   
   def favorited_by?(user)
     favorites.exists?(user_id: user.id)

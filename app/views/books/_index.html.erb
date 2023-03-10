@@ -21,6 +21,7 @@
           <%= render 'favorites/favorite-btn', book: book %>
         </td>
         <td>コメント数:<%= book.book_comments.count %></td>
+        <td><%= book.created_at.strftime('%Y/%m/%d') %></td>
       </tr>
     <% end %>
   </tbody>
