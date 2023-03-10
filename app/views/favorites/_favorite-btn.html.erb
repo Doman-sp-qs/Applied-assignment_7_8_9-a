@@ -2,6 +2,7 @@
   <%= link_to book_favorites_path(book), method: :delete, remote: true, class: 'text-danger' do %>
     <i class="fas fa-heart"></i><%= book.favorites.count %>
   <% end %>
+  
 <% else %>
   <%= link_to book_favorites_path(book), method: :post, remote: true, class: 'text-primary' do %>
     <i class="fas fa-heart"></i><%= book.favorites.count %>
